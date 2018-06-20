@@ -18,7 +18,6 @@ public class Round {
     private Player player;
     public Round(int amount, String photoPath) {
         this.amount = amount;
-        this.fullAmount = fullAmount;
         this.photoPath = photoPath;
     }
 

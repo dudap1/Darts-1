@@ -22,6 +22,17 @@ public class Contest {
             inverseJoinColumns = { @JoinColumn(name = "contest_id") })
     private Set< Player> players = new HashSet<>();
 
+    public Player getWinner() {
+        return winner;
+    }
+
+    public void setWinner(Player winner) {
+        this.winner = winner;
+    }
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="winner_id")
+    private Player winner;
 
     public Contest(String contestName, String contestPass) {
 
@@ -32,6 +43,7 @@ public class Contest {
     protected Contest() {
 
     }
+
 
     public Long getId() {
         return id;
