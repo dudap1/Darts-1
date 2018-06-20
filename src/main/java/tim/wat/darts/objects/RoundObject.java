@@ -11,7 +11,8 @@ public class RoundObject {
     private int fullAmount;
     private String photoPath;
 
-    public RoundObject(int amount, int fullAmount, String photoPath) {
+    public RoundObject(Long id, int amount, int fullAmount, String photoPath) {
+        this.id = id;
         this.amount = amount;
         this.fullAmount = fullAmount;
         this.photoPath = photoPath;
@@ -48,7 +49,6 @@ public class RoundObject {
     public void setPhotoPath(String photoPath) {
         this.photoPath = photoPath;
     }
-
 
 
 }

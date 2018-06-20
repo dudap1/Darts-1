@@ -23,7 +23,7 @@ public class UserService implements UserDetailsService {
         return new UserDetails() {
             @Override
             public Collection<? extends GrantedAuthority> getAuthorities() {
-                return Collections.singleton(Player.PlayerRole.ROLE_USER);
+                return player.getRoles();
             }
 
             @Override
@@ -53,7 +53,7 @@ public class UserService implements UserDetailsService {
 
             @Override
             public boolean isEnabled() {
-                return true;
+                return !player.isDeleted();
             }
         };
     }

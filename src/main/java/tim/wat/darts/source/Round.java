@@ -16,7 +16,7 @@ public class Round {
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="player_id")
     private Player player;
-    public Round(int amount, int fullAmount, String photoPath) {
+    public Round(int amount, String photoPath) {
         this.amount = amount;
         this.fullAmount = fullAmount;
         this.photoPath = photoPath;
@@ -64,5 +64,9 @@ public class Round {
 
     public void setPhotoPath(String photoPath) {
         this.photoPath = photoPath;
+    }
+
+    protected Round(){
+
     }
 }

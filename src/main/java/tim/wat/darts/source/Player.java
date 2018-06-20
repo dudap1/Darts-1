@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -17,6 +18,21 @@ public class Player {
     private String login;
     private String password;
     private String avatarPath;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "players_role", uniqueConstraints = @UniqueConstraint(columnNames = {"player_id", "role"}))
+    @Column(name = "role")
+    private List<PlayerRole> roles;
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    private boolean isDeleted;
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
@@ -24,6 +40,7 @@ public class Player {
             },
             mappedBy = "players")
     private Set<Contest> contests = new HashSet<>();
+
     protected Player() {
 
     }
@@ -34,6 +51,15 @@ public class Player {
         this.login = login;
         this.password = password;
         this.avatarPath = avatarPath;
+
+    }
+
+    public List<PlayerRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<PlayerRole> roles) {
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -80,8 +106,8 @@ public class Player {
         this.password = password;
     }
     public enum PlayerRole implements GrantedAuthority{
-        ROLE_USER;
-
+        ROLE_USER,
+        ROLE_ADMIN;
         @Override
         public String getAuthority() {
             return name();
