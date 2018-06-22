@@ -18,8 +18,8 @@ public class Contest {
                     CascadeType.MERGE
             })
     @JoinTable(name = "contest_player",
-            joinColumns = { @JoinColumn(name = "player_id") },
-            inverseJoinColumns = { @JoinColumn(name = "contest_id") })
+            joinColumns = { @JoinColumn(name = "contest_id") },
+            inverseJoinColumns = { @JoinColumn(name = "player_id") })
     private Set< Player> players = new HashSet<>();
 
     public Player getWinner() {
