@@ -7,9 +7,10 @@ import tim.wat.darts.source.Contest;
 import tim.wat.darts.source.Player;
 import tim.wat.darts.source.Round;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public interface RoundRepository extends CrudRepository<Round, Long> {
-    List<Round> findAllByContestAndPlayer(Contest contest, Player player);
+    ArrayList<Round> findAllByContestAndPlayer(Contest contest, Player player);
 }

@@ -18,6 +18,9 @@ public class RoundObject {
         this.photoPath = photoPath;
     }
 
+    public RoundObject() {
+    }
+
     public Long getId() {
         return id;
     }

@@ -2,6 +2,7 @@ package tim.wat.darts.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import tim.wat.darts.objects.ContestObject;
 import tim.wat.darts.objects.RemoveObject;
 import tim.wat.darts.objects.RoundObject;
 import tim.wat.darts.repositories.ContestRepository;
@@ -11,6 +12,7 @@ import tim.wat.darts.source.Contest;
 import tim.wat.darts.source.Player;
 import tim.wat.darts.source.Round;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -93,5 +95,22 @@ public class RoundController {
             roundRepository.save(round);
             return new RoundObject(round.getId(), amount, newFullAmount, round.getPhotoPath());
         }
+    }
+    @RequestMapping(value = "/getRounds", method = RequestMethod.POST)
+    @ResponseBody
+    public ArrayList<RoundObject> getContestRounds(@RequestParam(value = "contest_id", defaultValue = "") Long contest_id,
+                                        @RequestParam(value = "login", defaultValue = "") String login
+    ) {
+        ArrayList<Round> rounds=roundRepository.findAllByContestAndPlayer(contestRepository.findById(contest_id).get(),playerRepository.findByLogin(login));
+        ArrayList<RoundObject> roundObjects=new ArrayList<>();
+        RoundObject tempRoundObject=new RoundObject();
+        for(int i =0; i< rounds.size();i++){
+            tempRoundObject.setId(rounds.get(i).getId());
+            tempRoundObject.setAmount(rounds.get(i).getAmount());
+            tempRoundObject.setFullAmount(rounds.get(i).getFullAmount());
+            tempRoundObject.setPhotoPath(rounds.get(i).getPhotoPath());
+            roundObjects.add(tempRoundObject);
+        }
+        return roundObjects;
     }
 }

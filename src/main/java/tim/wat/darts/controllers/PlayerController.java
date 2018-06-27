@@ -16,7 +16,6 @@ public class PlayerController {
     PasswordEncoder passwordEncoder;
     @RequestMapping(value = "/setPlayer", method = RequestMethod.POST)
     @ResponseBody
-
     public PlayerObject setPlayer(@RequestParam(value = "name", defaultValue = "") String name,
                                   @RequestParam(value = "surname", defaultValue = "") String surname,
                                   @RequestParam(value = "login", defaultValue = "") String login,
@@ -28,12 +27,5 @@ public class PlayerController {
         return new PlayerObject(player.getId(), player.getName(),player.getSurname(),player.getLogin(),player.getAvatarPath());
     }
 
-    @RequestMapping(value = "/admin/deletePlayer", method = RequestMethod.POST)
-    @ResponseBody
-    public RemoveObject deleteRound (@RequestParam(value = "id", defaultValue = "") long id){
-        Player player = playerRepository.findById(id).get();
-        player.setDeleted(true);
-        playerRepository.save(player);
-        return new RemoveObject("Player "+id+" deleted");
-    }
+
 }
