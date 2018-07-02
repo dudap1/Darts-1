@@ -8,6 +8,7 @@ import tim.wat.darts.objects.ContestObject;
 import tim.wat.darts.source.Contest;
 import tim.wat.darts.source.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -16,6 +17,7 @@ public interface ContestRepository extends CrudRepository<Contest, Long> {
     Contest findByContestNameAndContestPass(String contestName, String contestPass);
 
 
+    Contest findByContestName(String contestName);
 
-    List<ContestObject> findAllByPlayers(Player player);
+    ArrayList<ContestObject> findAllByPlayers(Player player);
 }

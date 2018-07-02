@@ -99,11 +99,28 @@ public class RoundController {
     @RequestMapping(value = "/getRounds", method = RequestMethod.POST)
     @ResponseBody
     public ArrayList<RoundObject> getContestRounds(@RequestParam(value = "contest_id", defaultValue = "") Long contest_id,
-                                        @RequestParam(value = "login", defaultValue = "") String login
+                                                   @RequestParam(value = "login", defaultValue = "") String login
     ) {
         ArrayList<Round> rounds=roundRepository.findAllByContestAndPlayer(contestRepository.findById(contest_id).get(),playerRepository.findByLogin(login));
         ArrayList<RoundObject> roundObjects=new ArrayList<>();
         RoundObject tempRoundObject=new RoundObject();
+        fillRoundList(rounds, roundObjects, tempRoundObject);
+        return roundObjects;
+    }
+
+    @RequestMapping(value = "/getRoundsByName", method = RequestMethod.POST)
+    @ResponseBody
+    public ArrayList<RoundObject> getContestRoundsByName(@RequestParam(value = "contestName", defaultValue = "") String contestName,
+                                                   @RequestParam(value = "login", defaultValue = "") String login
+    ) {
+        ArrayList<Round> rounds=roundRepository.findAllByContestAndPlayer(contestRepository.findByContestName(contestName),playerRepository.findByLogin(login));
+        ArrayList<RoundObject> roundObjects=new ArrayList<>();
+        RoundObject tempRoundObject=new RoundObject();
+        fillRoundList(rounds, roundObjects, tempRoundObject);
+        return roundObjects;
+    }
+
+    private void fillRoundList(ArrayList<Round> rounds, ArrayList<RoundObject> roundObjects, RoundObject tempRoundObject) {
         for(int i =0; i< rounds.size();i++){
             tempRoundObject.setId(rounds.get(i).getId());
             tempRoundObject.setAmount(rounds.get(i).getAmount());
@@ -111,6 +128,5 @@ public class RoundController {
             tempRoundObject.setPhotoPath(rounds.get(i).getPhotoPath());
             roundObjects.add(tempRoundObject);
         }
-        return roundObjects;
     }
 }

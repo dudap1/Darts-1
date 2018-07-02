@@ -5,6 +5,7 @@ insert into players_role VALUES (1,'ROLE_ADMIN');
 insert into players_role VALUES (1,'ROLE_USER');
 insert into players_role VALUES (2,'ROLE_USER');
 insert into contest values (1,'test1','test',null);
+insert into contest values (2,'test221','test',null);
 insert into contest_player values (1,1);
 insert into round values (1,30,30,null,1,1);
 insert into round values (2,30,60,null,1,1);

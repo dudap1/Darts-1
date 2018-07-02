@@ -10,7 +10,6 @@ import tim.wat.darts.repositories.PlayerRepository;
 import tim.wat.darts.source.Player;
 
 import java.util.Collection;
-import java.util.Collections;
 
 @Service
 public class UserService implements UserDetailsService {

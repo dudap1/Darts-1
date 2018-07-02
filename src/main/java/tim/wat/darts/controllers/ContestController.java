@@ -8,6 +8,7 @@ import tim.wat.darts.repositories.PlayerRepository;
 import tim.wat.darts.source.Contest;
 import tim.wat.darts.source.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -42,11 +43,11 @@ public class ContestController {
 
     @RequestMapping(value = "/getPlayerContests", method = RequestMethod.POST)
     @ResponseBody
-    public List<ContestObject> getContest(
+    public ArrayList<ContestObject> getContest(
                                    @RequestParam(value = "login", defaultValue = "") String login
     ) {
         Player player=playerRepository.findByLogin(login);
-        List<ContestObject> playerContest = contestRepository.findAllByPlayers(player);
+        ArrayList<ContestObject> playerContest = contestRepository.findAllByPlayers(player);
         System.out.println("logged");
         return playerContest;
     }
