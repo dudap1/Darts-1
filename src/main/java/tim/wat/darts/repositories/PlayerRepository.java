@@ -8,5 +8,4 @@ import tim.wat.darts.source.Player;
 @Repository
 public interface PlayerRepository extends CrudRepository<Player, Long> {
     Player findByLogin(String login);
-    Player findByLoginAndPassword(String login,String password);
 }

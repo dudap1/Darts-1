@@ -35,7 +35,7 @@ public class RoundController {
         round.setContest(contest1);
         Player player1 = playerRepository.findById(player).get();
         round.setPlayer(player1);
-        List<Round> rounds = roundRepository.findAllByContestAndPlayer(contest1, player1);
+        List<Round> rounds = roundRepository.findAllByContest(contest1);
         int fullAmount = rounds.stream().mapToInt(Round::getAmount).sum();
         int newFullAmount = fullAmount + amount;
         if (newFullAmount > 501) {
@@ -104,7 +104,7 @@ public class RoundController {
         ArrayList<Round> rounds=roundRepository.findAllByContestAndPlayer(contestRepository.findById(contest_id).get(),playerRepository.findByLogin(login));
         ArrayList<RoundObject> roundObjects=new ArrayList<>();
         RoundObject tempRoundObject=new RoundObject();
-        fillRoundList(rounds, roundObjects, tempRoundObject);
+        fillRoundList(rounds, roundObjects);
         return roundObjects;
     }
 
@@ -113,19 +113,21 @@ public class RoundController {
     public ArrayList<RoundObject> getContestRoundsByName(@RequestParam(value = "contestName", defaultValue = "") String contestName,
                                                    @RequestParam(value = "login", defaultValue = "") String login
     ) {
-        ArrayList<Round> rounds=roundRepository.findAllByContestAndPlayer(contestRepository.findByContestName(contestName),playerRepository.findByLogin(login));
+        ArrayList<Round> rounds=roundRepository.findAllByContest(contestRepository.findByContestName(contestName));
         ArrayList<RoundObject> roundObjects=new ArrayList<>();
-        RoundObject tempRoundObject=new RoundObject();
-        fillRoundList(rounds, roundObjects, tempRoundObject);
+
+        fillRoundList(rounds, roundObjects);
         return roundObjects;
     }
 
-    private void fillRoundList(ArrayList<Round> rounds, ArrayList<RoundObject> roundObjects, RoundObject tempRoundObject) {
+    private void fillRoundList(ArrayList<Round> rounds, ArrayList<RoundObject> roundObjects) {
         for(int i =0; i< rounds.size();i++){
+            RoundObject tempRoundObject=new RoundObject();
             tempRoundObject.setId(rounds.get(i).getId());
             tempRoundObject.setAmount(rounds.get(i).getAmount());
             tempRoundObject.setFullAmount(rounds.get(i).getFullAmount());
             tempRoundObject.setPhotoPath(rounds.get(i).getPhotoPath());
+            tempRoundObject.setLogin(rounds.get(i).getPlayer().getLogin());
             roundObjects.add(tempRoundObject);
         }
     }

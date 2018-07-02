@@ -10,6 +10,7 @@ public class RoundObject {
     private int amount;
     private int fullAmount;
     private String photoPath;
+    private String login;
 
     public RoundObject(Long id, int amount, int fullAmount, String photoPath) {
         this.id = id;
@@ -19,6 +20,14 @@ public class RoundObject {
     }
 
     public RoundObject() {
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public Long getId() {

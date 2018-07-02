@@ -13,4 +13,5 @@ import java.util.List;
 @Repository
 public interface RoundRepository extends CrudRepository<Round, Long> {
     ArrayList<Round> findAllByContestAndPlayer(Contest contest, Player player);
+    ArrayList<Round> findAllByContest(Contest contest);
 }
