@@ -28,12 +28,12 @@ public class RoundController {
     @ResponseBody
     public RoundObject setRound(@RequestParam(value = "amount", defaultValue = "0") int amount,
                                 @RequestParam(value = "photoPath", defaultValue = "") String photoPath,
-                                @RequestParam(value = "contest", defaultValue = "") long contest,
-                                @RequestParam(value = "player", defaultValue = "") long player) {
+                                @RequestParam(value = "contest", defaultValue = "") String contest,
+                                @RequestParam(value = "player", defaultValue = "") String player) {
         Round round = new Round(amount, photoPath);
-        Contest contest1 = contestRepository.findById(contest).get();
+        Contest contest1 = contestRepository.findByContestName(contest);
         round.setContest(contest1);
-        Player player1 = playerRepository.findById(player).get();
+        Player player1 = playerRepository.findByLogin(player);
         round.setPlayer(player1);
         List<Round> rounds = roundRepository.findAllByContest(contest1);
         int fullAmount = rounds.stream().mapToInt(Round::getAmount).sum();
@@ -42,17 +42,17 @@ public class RoundController {
             round.setAmount(0);
             round.setFullAmount(fullAmount);
             roundRepository.save(round);
-            return new RoundObject(round.getId(), 0, fullAmount, photoPath);
+            return new RoundObject(round.getId(), 0, fullAmount, photoPath,player);
         } else if (newFullAmount == 501) {
             round.setFullAmount(newFullAmount);
             contest1.setWinner(player1);
             roundRepository.save(round);
             contestRepository.save(contest1);
-            return new RoundObject(round.getId(), amount, newFullAmount, photoPath);
+            return new RoundObject(round.getId(), amount, newFullAmount, photoPath,player);
         } else {
             round.setFullAmount(newFullAmount);
             roundRepository.save(round);
-            return new RoundObject(round.getId(), amount, newFullAmount, photoPath);
+            return new RoundObject(round.getId(), amount, newFullAmount, photoPath,player);
         }
     }
 
@@ -68,12 +68,12 @@ public class RoundController {
     @ResponseBody
     public RoundObject updateRound(@RequestParam(value = "id", defaultValue = "") long id,
                                    @RequestParam(value = "amount", defaultValue = "0") int amount,
-                                   @RequestParam(value = "contest", defaultValue = "") long contest,
-                                   @RequestParam(value = "player", defaultValue = "") long player) {
+                                   @RequestParam(value = "contest", defaultValue = "") String contest,
+                                   @RequestParam(value = "player", defaultValue = "") String player) {
         Round round = roundRepository.findById(id).get();
-        Contest contest1 = contestRepository.findById(contest).get();
+        Contest contest1 = contestRepository.findByContestName(contest);
         round.setContest(contest1);
-        Player player1 = playerRepository.findById(player).get();
+        Player player1 = playerRepository.findByLogin(player);
         round.setPlayer(player1);
         List<Round> rounds = roundRepository.findAllByContestAndPlayer(contest1, player1);
         int fullAmount = rounds.stream().mapToInt(Round::getAmount).sum() - round.getAmount();
@@ -82,18 +82,18 @@ public class RoundController {
             round.setAmount(0);
             round.setFullAmount(fullAmount);
             roundRepository.save(round);
-            return new RoundObject(round.getId(), 0, fullAmount, round.getPhotoPath());
+            return new RoundObject(round.getId(), 0, fullAmount, round.getPhotoPath(),player);
         } else if (newFullAmount == 501) {
             round.setFullAmount(newFullAmount);
             contest1.setWinner(player1);
             roundRepository.save(round);
             contestRepository.save(contest1);
-            return new RoundObject(round.getId(), amount, newFullAmount, round.getPhotoPath());
+            return new RoundObject(round.getId(), amount, newFullAmount, round.getPhotoPath(),player);
         } else {
             round.setFullAmount(newFullAmount);
             round.setAmount(amount);
             roundRepository.save(round);
-            return new RoundObject(round.getId(), amount, newFullAmount, round.getPhotoPath());
+            return new RoundObject(round.getId(), amount, newFullAmount, round.getPhotoPath(),player);
         }
     }
     @RequestMapping(value = "/getRounds", method = RequestMethod.POST)
@@ -103,7 +103,6 @@ public class RoundController {
     ) {
         ArrayList<Round> rounds=roundRepository.findAllByContestAndPlayer(contestRepository.findById(contest_id).get(),playerRepository.findByLogin(login));
         ArrayList<RoundObject> roundObjects=new ArrayList<>();
-        RoundObject tempRoundObject=new RoundObject();
         fillRoundList(rounds, roundObjects);
         return roundObjects;
     }

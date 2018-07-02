@@ -12,11 +12,12 @@ public class RoundObject {
     private String photoPath;
     private String login;
 
-    public RoundObject(Long id, int amount, int fullAmount, String photoPath) {
+    public RoundObject(Long id, int amount, int fullAmount, String photoPath,String login) {
         this.id = id;
         this.amount = amount;
         this.fullAmount = fullAmount;
         this.photoPath = photoPath;
+        this.login=login;
     }
 
     public RoundObject() {
