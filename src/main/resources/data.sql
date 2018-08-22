@@ -1,5 +1,5 @@
 
-insert into player values (1,null,false,'admin','','$2a$04$XnhwasR32dlpAylvG4NhpeeNSDQzecy69hJ4QV1J3EnlbxcT0qFae','');
+insert into player values (1,null,false,'admin','','$2a$07$qT0PeJq4lcxDfexyhylYyOYLXWyKuABuVq0xy2dvMQUYIWhzhboUy','');
 insert into player values (2,null,false,'user','','$2a$04$XnhwasR32dlpAylvG4NhpeeNSDQzecy69hJ4QV1J3EnlbxcT0qFae','');
 insert into players_role VALUES (1,'ROLE_ADMIN');
 insert into players_role VALUES (1,'ROLE_USER');
