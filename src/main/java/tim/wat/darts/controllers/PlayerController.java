@@ -28,4 +28,18 @@ public class PlayerController {
     }
 
 
+    @RequestMapping(value = "/setAvatarImage", method = RequestMethod.POST)
+    @ResponseBody
+    public PlayerObject setVatharImage(@RequestParam(value = "name", defaultValue = "") String name,
+                                  @RequestParam(value = "surname", defaultValue = "") String surname,
+                                  @RequestParam(value = "login", defaultValue = "") String login,
+                                  @RequestParam(value = "password", defaultValue = "") String password,
+                                  @RequestParam(value = "avatarPath", defaultValue = "") String avatarPath) {
+        String encodedPassword = passwordEncoder.encode(password);
+        Player player = new Player(name, surname, login, encodedPassword, avatarPath);
+        playerRepository.save(player);
+        return new PlayerObject(player.getId(), player.getName(),player.getSurname(),player.getLogin(),player.getAvatarPath());
+    }
+
+
 }

@@ -67,9 +67,9 @@ public class RoundController {
     @RequestMapping(value = "/updateRound", method = RequestMethod.POST)
     @ResponseBody
     public RoundObject updateRound(@RequestParam(value = "id", defaultValue = "") long id,
-                                   @RequestParam(value = "amount", defaultValue = "0") int amount,
-                                   @RequestParam(value = "contest", defaultValue = "") String contest,
-                                   @RequestParam(value = "player", defaultValue = "") String player) {
+        @RequestParam(value = "amount", defaultValue = "0") int amount,
+        @RequestParam(value = "contest", defaultValue = "") String contest,
+        @RequestParam(value = "player", defaultValue = "") String player) {
         Round round = roundRepository.findById(id).get();
         Contest contest1 = contestRepository.findByContestName(contest);
         round.setContest(contest1);
