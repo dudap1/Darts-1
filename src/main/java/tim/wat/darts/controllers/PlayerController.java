@@ -41,5 +41,10 @@ public class PlayerController {
         return new PlayerObject(player.getId(), player.getName(),player.getSurname(),player.getLogin(),player.getAvatarPath());
     }
 
+    @RequestMapping(value = "/userLogin", method = RequestMethod.POST)
+    @ResponseBody
+    public String userLogin() {
 
+        return "Logged";
+    }
 }
