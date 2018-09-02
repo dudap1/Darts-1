@@ -10,14 +10,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.cors.CorsConfiguration;
 import tim.wat.darts.services.UserService;
 
 import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
-@CrossOrigin(allowCredentials="true")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -49,17 +48,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
+        corsConfiguration.setAllowCredentials(true);
+
         http
+                .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues().combine(corsConfiguration)).and()
                 .csrf().disable();
 
         http.authorizeRequests()
+                .antMatchers("/api/whoAmI").permitAll()
                 .antMatchers("/securityNone").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-//                .antMatchers("/setPlayer").hasRole("PUBLIC")
+                .antMatchers("/setPlayer").hasRole("PUBLIC")
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic().authenticationEntryPoint(authenticationEntryPoint)
-                .and().formLogin().loginProcessingUrl("/api/login");
+                .and().formLogin().loginProcessingUrl("/api/login")
+                .successHandler((request, response, authentication) -> {})
+                .and().logout().logoutUrl("/api/logout")
+                .logoutSuccessHandler((request, response, authentication) -> {})
+                .deleteCookies("auth_code", "JSESSIONID").invalidateHttpSession(true);
 
 
     }
