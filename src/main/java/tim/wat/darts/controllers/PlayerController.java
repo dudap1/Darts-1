@@ -1,14 +1,18 @@
 package tim.wat.darts.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import tim.wat.darts.objects.PlayerObject;
-import tim.wat.darts.objects.RemoveObject;
 import tim.wat.darts.repositories.PlayerRepository;
 import tim.wat.darts.source.Player;
 
-@RestController
+import java.util.Collections;
+import java.util.Map;
+
+@RestController("/api")
 public class PlayerController {
     @Autowired
     PlayerRepository playerRepository;
@@ -41,10 +45,13 @@ public class PlayerController {
         return new PlayerObject(player.getId(), player.getName(),player.getSurname(),player.getLogin(),player.getAvatarPath());
     }
 
-    @RequestMapping(value = "/userLogin", method = RequestMethod.POST)
+    @RequestMapping(value = "/whoAmI", method = RequestMethod.GET)
     @ResponseBody
-    public String userLogin() {
-
-        return "Logged";
+    public Map<String, String> whoAmI() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!authentication.getName().equals("anonymousUser")) {
+            return Collections.singletonMap("login", authentication.getName());
+        }
+        return null;
     }
 }
