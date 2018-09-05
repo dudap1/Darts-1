@@ -2,6 +2,7 @@ package tim.wat.darts;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,11 +10,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 import tim.wat.darts.services.UserService;
 
 import javax.sql.DataSource;
 
+@Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -46,17 +48,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
+        corsConfiguration.setAllowCredentials(true);
+
         http
+                .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues().combine(corsConfiguration)).and()
                 .csrf().disable();
 
         http.authorizeRequests()
+                .antMatchers("/api/whoAmI").permitAll()
                 .antMatchers("/securityNone").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-//                .antMatchers("/setPlayer").hasRole("PUBLIC")
+                .antMatchers("/setPlayer").hasRole("PUBLIC")
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic().authenticationEntryPoint(authenticationEntryPoint)
-                .and().formLogin().loginProcessingUrl("/api/login");
+                .and().formLogin().loginProcessingUrl("/api/login")
+                .successHandler((request, response, authentication) -> {})
+                .and().logout().logoutUrl("/api/logout")
+                .logoutSuccessHandler((request, response, authentication) -> {})
+                .deleteCookies("auth_code", "JSESSIONID").invalidateHttpSession(true);
 
 
     }
