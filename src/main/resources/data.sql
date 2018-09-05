@@ -7,6 +7,8 @@ insert into players_role VALUES (2,'ROLE_USER');
 insert into contest values (1,'test1','test',null);
 insert into contest values (2,'test221','test',null);
 insert into contest_player values (1,1);
+insert into contest_player values (2,1);
+insert into contest_player values (2,2);
 insert into round values (1,30,30,null,1,2);
 insert into round values (2,30,60,null,1,1);
 insert into round values (3,30,90,null,1,1);
