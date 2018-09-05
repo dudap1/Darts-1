@@ -120,7 +120,7 @@ public class RoundController {
             ArrayList<Player> players=playerRepository.findAllByContests(contest);
             for(int i =0;i<players.size();i++){
                 Round round=new Round(0,null);
-
+                round.setId((long)i+1);
                 round.setPlayer(players.get(i));
                 rounds.add(i,round);
             }
