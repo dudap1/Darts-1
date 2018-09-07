@@ -112,9 +112,19 @@ public class RoundController {
     public ArrayList<RoundObject> getContestRoundsByName(@RequestParam(value = "contestName", defaultValue = "") String contestName,
                                                    @RequestParam(value = "login", defaultValue = "") String login
     ) {
-        ArrayList<Round> rounds=roundRepository.findAllByContest(contestRepository.findByContestName(contestName));
+        Contest contest =contestRepository.findByContestName(contestName);
+        ArrayList<Round> rounds=roundRepository.findAllByContest(contest);
         ArrayList<RoundObject> roundObjects=new ArrayList<>();
 
+        if(rounds.size()==0){
+            ArrayList<Player> players=playerRepository.findAllByContests(contest);
+            for(int i =0;i<players.size();i++){
+                Round round=new Round(0,null);
+
+                round.setPlayer(players.get(i));
+                rounds.add(i,round);
+            }
+        }
         fillRoundList(rounds, roundObjects);
         return roundObjects;
     }

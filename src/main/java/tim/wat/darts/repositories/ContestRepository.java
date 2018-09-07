@@ -17,6 +17,7 @@ public interface ContestRepository extends CrudRepository<Contest, Long> {
     Contest findByContestNameAndContestPass(String contestName, String contestPass);
 
 
+
     Contest findByContestName(String contestName);
 
     ArrayList<ContestObject> findAllByPlayers(Player player);
