@@ -35,7 +35,7 @@ public class RoundController {
         round.setContest(contest1);
         Player player1 = playerRepository.findByLogin(player);
         round.setPlayer(player1);
-        List<Round> rounds = roundRepository.findAllByContest(contest1);
+        List<Round> rounds = roundRepository.findAllByContestAndPlayer(contest1,player1);
         int fullAmount = rounds.stream().mapToInt(Round::getAmount).sum();
         int newFullAmount = fullAmount + amount;
         if (newFullAmount > 501) {
@@ -120,7 +120,7 @@ public class RoundController {
             ArrayList<Player> players=playerRepository.findAllByContests(contest);
             for(int i =0;i<players.size();i++){
                 Round round=new Round(0,null);
-                round.setId((long)i+1);
+                round.setId((long)i);
                 round.setPlayer(players.get(i));
                 rounds.add(i,round);
             }
