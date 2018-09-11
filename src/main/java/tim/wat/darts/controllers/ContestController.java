@@ -3,6 +3,7 @@ package tim.wat.darts.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import tim.wat.darts.objects.ContestObject;
+import tim.wat.darts.objects.PlayerObject;
 import tim.wat.darts.repositories.ContestRepository;
 import tim.wat.darts.repositories.PlayerRepository;
 import tim.wat.darts.source.Contest;
@@ -50,5 +51,18 @@ public class ContestController {
         ArrayList<ContestObject> playerContest = contestRepository.findAllByPlayers(player);
         System.out.println("logged");
         return playerContest;
+    }
+
+    @RequestMapping(value = "/getContestPlayers", method = RequestMethod.POST)
+    @ResponseBody
+    public ArrayList<PlayerObject> getPlayers(
+            @RequestParam(value = "contest", defaultValue = "") String contest
+    ) {
+        ArrayList<Player> player=playerRepository.findAllByContests(contestRepository.findByContestName(contest));
+        ArrayList<PlayerObject> playerObjects = new ArrayList<>();
+        for (int i =0;i< player.size();i++){
+            playerObjects.add(new PlayerObject(player.get(i).getId(),player.get(i).getName(),player.get(i).getSurname(),player.get(i).getLogin(),null));
+        }
+        return playerObjects;
     }
 }
