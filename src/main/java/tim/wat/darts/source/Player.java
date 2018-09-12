@@ -3,6 +3,7 @@ package tim.wat.darts.source;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -58,7 +59,9 @@ public class Player {
         return roles;
     }
 
-    public void setRoles(List<PlayerRole> roles) {
+    public void setRoles(PlayerRole role) {
+        ArrayList<PlayerRole> roles = new ArrayList<>();
+        roles.add(role);
         this.roles = roles;
     }
 
