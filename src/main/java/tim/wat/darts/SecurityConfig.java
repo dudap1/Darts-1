@@ -59,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/whoAmI").permitAll()
                 .antMatchers("/securityNone").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/setPlayer").permitAll()
+                .antMatchers("/api/setPlayer").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic().authenticationEntryPoint(authenticationEntryPoint)
