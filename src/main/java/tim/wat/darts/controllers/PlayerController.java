@@ -10,7 +10,10 @@ import tim.wat.darts.repositories.PlayerRepository;
 import tim.wat.darts.source.Player;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+
+import static tim.wat.darts.source.Player.PlayerRole.ROLE_USER;
 
 @RestController("/api")
 public class PlayerController {
@@ -27,6 +30,8 @@ public class PlayerController {
                                   @RequestParam(value = "avatarPath", defaultValue = "") String avatarPath) {
         String encodedPassword = passwordEncoder.encode(password);
         Player player = new Player(name, surname, login, encodedPassword, avatarPath);
+
+        player.setRoles(ROLE_USER);
         playerRepository.save(player);
         return new PlayerObject(player.getId(), player.getName(),player.getSurname(),player.getLogin(),player.getAvatarPath());
     }
